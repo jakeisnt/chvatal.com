@@ -1,0 +1,3 @@
+#+TITLE: chvatal.com
+
+The chvatal.com home page.
