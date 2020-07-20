@@ -1,0 +1,6 @@
+* Inbox
+** TODO add a family tree view
+a single 'tree' icon on the bottom should link to
+an animated visualization of the family tree,
+with a link to come back to the main page.
+this logo should be placed in lieu of the creative commons one.
