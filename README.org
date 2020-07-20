@@ -1,3 +1,12 @@
 #+TITLE: chvatal.com
 
 The chvatal.com home page.
+
+* Contributing
+If you're a Chvatal and you'd like to contribute, feel free to.
+
+Open a pull request adding your first name with a single associated URL
+to the list of ~<a/>~ tags.
+
+If you're unfamiliar with Github, feel free to reach out to me
+with your name and associated URL to add yourself.
