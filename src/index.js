@@ -1,7 +1,7 @@
 import { render } from 'react-dom'
 import React, { useState } from 'react'
 import { useSprings, animated, to } from 'react-spring'
-import { useGesture } from 'react-use-gesture'
+import { useDrag } from 'react-use-gesture'
 import './styles.css'
 
 const cards = [
@@ -22,12 +22,13 @@ const trans = (r, s) => `perspective(1500px) rotateX(30deg) rotateY(${r / 10}deg
 function Deck() {
   const [gone] = useState(() => new Set()) // The set flags all the cards that are flicked out
   const [props, set] = useSprings(cards.length, i => ({ ...to2(i), from: from(i) })) // Create a bunch of springs using the helpers above
+
   // Create a gesture, we're interested in down-state, delta (current-pos - click-pos), direction and velocity
-  const bind = useGesture(({ args: [index], down, delta: [xDelta], distance, direction: [xDir], velocity }) => {
-    const trigger = velocity > 0.2 // If you flick hard enough it should trigger the card to2 fly out
+  const bind = useDrag(({ args: [index], down, delta: [xDelta], distance, direction: [xDir], velocity }) => {
+    const trigger = velocity > 0.1 // If you flick hard enough it should trigger the card to2 fly out
     const dir = xDir < 0 ? -1 : 1 // Direction should either point left or right
     if (!down && trigger) gone.add(index) // If butto2n/finger's up and trigger velocity is reached, we flag the card ready to2 fly out
-    set(i => {
+    set.start(i => {
       if (index !== i) return // We're only interested in changing spring-data for the current spring
       const isGone = gone.has(index)
       const x = isGone ? (200 + window.innerWidth) * dir : down ? xDelta : 0 // When a card is gone it flys out left or right, otherwise goes back to2 zero
@@ -41,7 +42,8 @@ function Deck() {
   return props.map(({ x, y, rot, scale }, i) => (
     <animated.div key={i} style={{ transform: to([x, y], (x, y) => `translate3d(${x}px,${y}px,0)`) }}>
       {/* This is the card itself, we're binding our gesture to2 it (and inject its index so we know which is which) */}
-      <animated.div {...bind(i)} style={{ transform: to([rot, scale], trans), backgroundImage: `url(${cards[i]})` }} />
+      <animated.div {...bind(i)} style={{ transform: to([rot, scale], trans) }} />
+{/* , backgroundImage: `url(${cards[i]})` */}
     </animated.div>
   ))
 }
